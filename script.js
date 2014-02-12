@@ -14,30 +14,23 @@ fappyBird.Character.prototype.bindEvents = function() {
     var that = this;
     var jumpId = 0;
     this.domGame.addEventListener("click", function(){
-        jumpId++;
-        var oldTopValue = 0;
-        var jumpHeight = 9;
-        var currentJumpId = jumpId;
-        setInterval(function(){
-            if(currentJumpId == jumpId) {
-                oldTopValue = parseInt(that.domElement.style.top.replace("%",""));
-                if (jumpHeight > 0) {
-                    that.domElement.className = "upAnimation";
-                    that.domElement.style.top = --oldTopValue + "%";
-                    jumpHeight--;
-                } else {
-                    that.domElement.className = "downAnimation";
-                    that.domElement.style.top = ++oldTopValue + "%";
-                }
+        var oldTopValue = that.domElement.offsetTop;
+        jumpHeight = 9;
+        var newTopValue = oldTopValue - (window.innerHeight * jumpHeight) / 100;
+        that.domElement.className = "upAnimation";
+        that.domElement.style.top = newTopValue + "px";
 
-                if(that.domElement.style.top == "100%"){
-                    that.domGame.parentNode.removeChild(that.domGame);
-                    location.reload();
-                }
-            }
-
-        }, 40);
+        setTimeout(function(){
+            that.domElement.className = "downAnimation";
+        }, 500);
     }, false);
+
+    setInterval(function(){
+        if(that.domElement.offsetTop + that.domElement.offsetHeight == window.innerHeight){
+            that.domGame.parentNode.removeChild(that.domGame);
+            location.reload();
+        }
+    }, 25);
 
 };
 
@@ -66,12 +59,10 @@ fappyBird.Pipe.prototype.appendPipe = function(height) {
 fappyBird.Pipe.prototype.setAnimation = function(speed) {
 
     var that = this;
-    var pipeLocation = 100;
-    this.pipeDom.style.left = pipeLocation + "%";
     setInterval(function(){
-        pipeLocation -= speed
-        that.pipeDom.style.left = pipeLocation + "%";
-        if(pipeLocation == -50){
+
+        //Remove when outside boundries
+        if(that.pipeDom.offsetLeft == that.pipeDom.offsetWidth){
             that.pipeDom.remove();
         }
 
@@ -89,7 +80,7 @@ fappyBird.Pipe.prototype.setAnimation = function(speed) {
             }
         }
 
-    }, 40);
+    }, 25);
 
 };
 

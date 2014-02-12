@@ -6,16 +6,44 @@ body { overflow: hidden; }
 #background { width: 100%; height: 100%; min-height: 530px; background: url("images/background.png") repeat-x; background-position: 0 0; background-size: auto 100%; position: absolute; z-index: -1; }
 
 
-#littleBastard { width: 30px; height: 52px; background: url("images/character.png") no-repeat; position: relative; left: 25%; }
+#littleBastard { width: 30px; height: 52px; background: url("images/character.png") no-repeat; position: relative; left: 25%; transition: top .5s ease-out; -webkit-transition: top .5s ease-out; }
 #littleBastard.upAnimation { background-position: -214px -45px; }
-#littleBastard.downAnimation { background-position: -214px -98px; }
+#littleBastard.downAnimation { background-position: -214px -98px; animation: fall 3s 1 ease-in; -webkit-animation: fall 3s 1 ease-in; }
 
 
-#foreground .pipe { position: absolute; height: 100%; }
+#foreground .pipe { position: absolute; height: 100%; animation: pipeSlide 5s 1 linear; -webkit-animation: pipeSlide 5s 1 linear; left: 100%; }
 #foreground div { width: 89px; }
 #foreground .pipeHead { background: url("images/pipeHead.png") no-repeat 0 0; height: 34px; }
 #foreground .pipeBody { background: url("images/pipeBody.png") repeat-y 0 0; height: 100%; }
 #foreground .down { transform:rotate(180deg); -ms-transform:rotate(180deg); -webkit-transform:rotate(180deg); -moz-transform:rotate(180deg); margin-bottom: 140px; }
+
+@keyframes pipeSlide {
+	from {
+		left: 100%;
+	}
+	to {
+		left: -50%;
+	}
+}
+@-webkit-keyframes pipeSlide {
+	from {
+		left: 100%;
+	}
+	to {
+		left: -50%;
+	}
+}
+
+@keyframes fall {
+	to {
+		top: 120%;
+	}
+}
+@-webkit-keyframes fall {
+	to {
+		top: 120%;
+	}
+}
 
 
 #message { display: none; }
