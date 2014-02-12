@@ -31,6 +31,7 @@ fappyBird.Character.prototype.bindEvents = function() {
                 }
 
                 if(that.domElement.style.top == "100%"){
+                    that.domGame.parentNode.removeChild(that.domGame);
                     location.reload();
                 }
             }
@@ -46,6 +47,7 @@ fappyBird.Pipe = function(height, pipeNumber) {
     this.pipeId = "pipe_" + pipeNumber;
     this.domForeground = document.getElementById("foreground");
     this.domCharacter = document.getElementById("littleBastard");
+    this.domGame = document.getElementById("game");
 
     this.appendPipe(height);
     this.setAnimation(1);
@@ -82,6 +84,7 @@ fappyBird.Pipe.prototype.setAnimation = function(speed) {
             var pipeSpaceTop = document.getElementsByClassName("pipeHead", that.pipeDom)[0].offsetTop - ((window.innerHeight * (that.height * -1)) / 100) + document.getElementsByClassName("pipeHead", that.pipeDom)[0].offsetHeight;
             var pipeSpaceBottom = document.getElementsByClassName("pipeHead", that.pipeDom)[1].offsetTop - ((window.innerHeight * (that.height * -1)) / 100);
             if(characterTopPosition < pipeSpaceTop || characterBottomPosition > pipeSpaceBottom){
+                that.domGame.parentNode.removeChild(that.domGame);
                 location.reload();
             }
         }
