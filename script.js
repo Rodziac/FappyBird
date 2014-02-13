@@ -18,8 +18,6 @@ fappyBird.Character.prototype.bindEvents = function() {
         var oldTopValue = parseInt(that.domElement.offsetTop) + "px";
         var newTopValue = parseInt(that.domElement.offsetTop - ((window.innerHeight * jumpHeight) / 100)) + "px";
 
-        that.domElement.className = "up";
-        that.domElement.style.top = oldTopValue;
         that.domElement.className = "upAnimation";
         that.domElement.style.top = newTopValue;
 
