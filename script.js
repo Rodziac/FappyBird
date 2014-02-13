@@ -12,23 +12,33 @@ fappyBird.Character = function() {
 fappyBird.Character.prototype.bindEvents = function() {
 
     var that = this;
-    var jumpId = 0;
+    var latestJumpId = 0;
     this.domGame.addEventListener("click", function(){
-        var oldTopValue = that.domElement.offsetTop;
         jumpHeight = 9;
-        var newTopValue = oldTopValue - (window.innerHeight * jumpHeight) / 100;
-        that.domElement.className = "upAnimation";
-        that.domElement.style.top = newTopValue + "px";
+        var oldTopValue = parseInt(that.domElement.offsetTop) + "px";
+        var newTopValue = parseInt(that.domElement.offsetTop - ((window.innerHeight * jumpHeight) / 100)) + "px";
 
+        that.domElement.className = "up";
+        that.domElement.style.top = oldTopValue;
+        that.domElement.className = "upAnimation";
+        that.domElement.style.top = newTopValue;
+
+        latestJumpId++;
+        thisJumpId = latestJumpId;
         setTimeout(function(){
-            that.domElement.className = "downAnimation";
-        }, 500);
+            if(thisJumpId == latestJumpId){
+                that.domElement.style.top = that.domElement.offsetTop + "px";
+                that.domElement.className = "downAnimation";
+            }
+        }, 800);
     }, false);
 
     setInterval(function(){
-        if(that.domElement.offsetTop + that.domElement.offsetHeight == window.innerHeight){
+        if(that.domElement.offsetTop + that.domElement.offsetHeight >= window.innerHeight){
             that.domGame.parentNode.removeChild(that.domGame);
             location.reload();
+        } else if (that.domElement.offsetTop < 0) {
+            that.domElement.style.top = 0 + "px";
         }
     }, 25);
 
@@ -62,7 +72,7 @@ fappyBird.Pipe.prototype.setAnimation = function(speed) {
     setInterval(function(){
 
         //Remove when outside boundries
-        if(that.pipeDom.offsetLeft == that.pipeDom.offsetWidth){
+        if(that.pipeDom.offsetLeft <= 0){
             that.pipeDom.remove();
         }
 
@@ -98,7 +108,6 @@ fappyBird.Pipe.prototype.pipeTemplate = function() {
 fappyBird.Level = function() {
 
     this.littleBastard = new fappyBird.Character();
-    this.littleBastard.bindEvents();
 
     this.domBackground = document.getElementById("background");
     this.domGame = document.getElementById("game");
