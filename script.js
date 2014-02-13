@@ -28,7 +28,7 @@ fappyBird.Character.prototype.bindEvents = function() {
                 that.domElement.style.top = window.innerHeight + that.domElement.offsetHeight + "px";
                 that.domElement.className = "downAnimation";
             }
-        }, 700);
+        }, 300);
     }, false);
 
     setInterval(function(){
@@ -159,7 +159,7 @@ fappyBird.Level.prototype.generatePipes = function(speed) {
 
     var pipeCount = 0;
     setInterval(function(){
-        new fappyBird.Pipe( -1 * (Math.floor(Math.random() * (70 - 10 + 1)) + 10), pipeCount);
+        new fappyBird.Pipe( -1 * (Math.floor(Math.random() * (70 - 30 + 1)) + 30), pipeCount);
         pipeCount++
     }, 1500);
 
