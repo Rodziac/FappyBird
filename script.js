@@ -27,7 +27,7 @@ fappyBird.Character.prototype.bindEvents = function() {
         thisJumpId = latestJumpId;
         setTimeout(function(){
             if(thisJumpId == latestJumpId){
-                that.domElement.style.top = that.domElement.offsetTop + "px";
+                that.domElement.style.top = window.innerHeight + that.domElement.offsetHeight + "px";
                 that.domElement.className = "downAnimation";
             }
         }, 800);
