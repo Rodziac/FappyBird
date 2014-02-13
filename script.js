@@ -22,13 +22,13 @@ fappyBird.Character.prototype.bindEvents = function() {
         that.domElement.style.top = newTopValue;
 
         latestJumpId++;
-        thisJumpId = latestJumpId;
+        var thisJumpId = latestJumpId;
         setTimeout(function(){
             if(thisJumpId == latestJumpId){
                 that.domElement.style.top = window.innerHeight + that.domElement.offsetHeight + "px";
                 that.domElement.className = "downAnimation";
             }
-        }, 800);
+        }, 700);
     }, false);
 
     setInterval(function(){
@@ -49,6 +49,7 @@ fappyBird.Pipe = function(height, pipeNumber) {
     this.domForeground = document.getElementById("foreground");
     this.domCharacter = document.getElementById("littleBastard");
     this.domGame = document.getElementById("game");
+    this.alive = true;
 
     this.appendPipe(height);
     this.setAnimation(1);
@@ -58,33 +59,43 @@ fappyBird.Pipe = function(height, pipeNumber) {
 fappyBird.Pipe.prototype.appendPipe = function(height) {
 
     var domPipeTemplate = this.pipeTemplate();
-    this.domForeground.innerHTML += domPipeTemplate;
+    this.domForeground.appendChild(domPipeTemplate);
     this.pipeDom = document.getElementById(this.pipeId);
     this.pipeDom.style.top = height + "%";
+
+};
+
+fappyBird.Pipe.prototype.destroyPipe = function() {
+
+    clearInterval(this.intervalId);
+    this.alive = false;
+    this.pipeDom.remove();
 
 };
 
 fappyBird.Pipe.prototype.setAnimation = function(speed) {
 
     var that = this;
-    setInterval(function(){
+    this.intervalId = setInterval(function(){
 
         //Remove when outside boundries
         if(that.pipeDom.offsetLeft <= 0){
-            that.pipeDom.remove();
+            that.destroyPipe();
         }
 
-        //character pipe collusion
-        var characterRightPosition = that.domCharacter.offsetWidth + that.domCharacter.offsetLeft
-        var pipeLeftPosition = that.pipeDom.offsetLeft;
-        if(characterRightPosition >= pipeLeftPosition) {
-            var characterTopPosition = that.domCharacter.offsetTop;
-            var characterBottomPosition = characterTopPosition + that.domCharacter.offsetHeight;
-            var pipeSpaceTop = document.getElementsByClassName("pipeHead", that.pipeDom)[0].offsetTop - ((window.innerHeight * (that.height * -1)) / 100) + document.getElementsByClassName("pipeHead", that.pipeDom)[0].offsetHeight;
-            var pipeSpaceBottom = document.getElementsByClassName("pipeHead", that.pipeDom)[1].offsetTop - ((window.innerHeight * (that.height * -1)) / 100);
-            if(characterTopPosition < pipeSpaceTop || characterBottomPosition > pipeSpaceBottom){
-                that.domGame.parentNode.removeChild(that.domGame);
-                location.reload();
+        if (that.alive == true){
+            //character pipe collusion
+            var characterRightPosition = that.domCharacter.offsetWidth + that.domCharacter.offsetLeft
+            var pipeLeftPosition = that.pipeDom.offsetLeft;
+            if(characterRightPosition >= pipeLeftPosition) {
+                var characterTopPosition = that.domCharacter.offsetTop;
+                var characterBottomPosition = characterTopPosition + that.domCharacter.offsetHeight;
+                var pipeSpaceTop = document.getElementsByClassName("pipeHead", that.pipeDom)[0].offsetTop - ((window.innerHeight * (that.height * -1)) / 100) + document.getElementsByClassName("pipeHead", that.pipeDom)[0].offsetHeight;
+                var pipeSpaceBottom = document.getElementsByClassName("pipeHead", that.pipeDom)[1].offsetTop - ((window.innerHeight * (that.height * -1)) / 100);
+                if(characterTopPosition < pipeSpaceTop || characterBottomPosition > pipeSpaceBottom){
+                    that.domGame.parentNode.removeChild(that.domGame);
+                    location.reload();
+                }
             }
         }
 
@@ -94,12 +105,14 @@ fappyBird.Pipe.prototype.setAnimation = function(speed) {
 
 fappyBird.Pipe.prototype.pipeTemplate = function() {
 
-    return '<div class="pipe" id="' + this.pipeId + '">' +
-                      '<div class="pipeBody"></div>' +
-                      '<div class="pipeHead down"></div>' +
-                      '<div class="pipeHead"></div>'+
-                      '<div class="pipeBody"></div>'
-                  '</div>';
+    var pipeEl = document.createElement("div");
+    pipeEl.className = "pipe";
+    pipeEl.id = this.pipeId;
+    pipeEl.innerHTML = '<div class="pipeBody"></div>' +
+                       '<div class="pipeHead down"></div>' +
+                       '<div class="pipeHead"></div>'+
+                       '<div class="pipeBody"></div>';
+    return pipeEl;
 
 };
 
@@ -146,9 +159,9 @@ fappyBird.Level.prototype.generatePipes = function(speed) {
 
     var pipeCount = 0;
     setInterval(function(){
-        new fappyBird.Pipe(-50, pipeCount);
+        new fappyBird.Pipe( -1 * (Math.floor(Math.random() * (70 - 10 + 1)) + 10), pipeCount);
         pipeCount++
-    }, 5000);
+    }, 1500);
 
 };
 
