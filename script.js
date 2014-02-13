@@ -87,7 +87,8 @@ fappyBird.Pipe.prototype.setAnimation = function(speed) {
             //character pipe collusion
             var characterRightPosition = that.domCharacter.offsetWidth + that.domCharacter.offsetLeft
             var pipeLeftPosition = that.pipeDom.offsetLeft;
-            if(characterRightPosition >= pipeLeftPosition) {
+            var pipeRightWithMargin = that.pipeDom.offsetLeft + that.pipeDom.offsetWidth + that.domCharacter.offsetWidth;
+            if(characterRightPosition >= pipeLeftPosition && characterRightPosition <= pipeRightWithMargin) {
                 var characterTopPosition = that.domCharacter.offsetTop;
                 var characterBottomPosition = characterTopPosition + that.domCharacter.offsetHeight;
                 var pipeSpaceTop = document.getElementsByClassName("pipeHead", that.pipeDom)[0].offsetTop - ((window.innerHeight * (that.height * -1)) / 100) + document.getElementsByClassName("pipeHead", that.pipeDom)[0].offsetHeight;
