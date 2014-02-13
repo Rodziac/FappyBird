@@ -146,7 +146,8 @@ fappyBird.Level.prototype.generatePipes = function(speed) {
 
     var pipeCount = 0;
     setInterval(function(){
-        new fappyBird.Pipe(-50, pipeCount++);
+        new fappyBird.Pipe(-50, pipeCount);
+        pipeCount++
     }, 5000);
 
 };

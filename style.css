@@ -17,6 +17,23 @@ body { overflow: hidden; }
 #foreground .pipeBody { background: url("images/pipeBody.png") repeat-y 0 0; height: 100%; }
 #foreground .down { transform:rotate(180deg); -ms-transform:rotate(180deg); -webkit-transform:rotate(180deg); -moz-transform:rotate(180deg); margin-bottom: 140px; }
 
+@keyframes pipeSlide {
+	from {
+		left: 100%;
+	}
+	to {
+		left: -50%;
+	}
+}
+@-webkit-keyframes pipeSlide {
+	from {
+		left: 100%;
+	}
+	to {
+		left: -50%;
+	}
+}
+
 #message { display: none; }
 
 
